@@ -15,43 +15,13 @@
 - **served-state 守卫** — 只能替换模型真正"见过"的行（读取/diff 展示过的哈希），杜绝模型凭空编造锚点。
 - **文件安全** — BOM、行尾（LF/CRLF/CR）保留；UTF-8 解码错误警告；100MB/238328 行上限；原子写入走 DSH `fs` 服务；sandbox 拒绝映射为标准 `[sandbox: ...]` 标记并提示用内置 `write` 升级。
 
-## 安装（DSH 动态插件）
-
-`src/host.js` 是一个自包含的 JavaScript **函数体**：`(async () => { <文件内容> })()` 返回 Cordis 插件对象。
-
-在 DSH 会话中：
-
-1. `cordis_define`：`plugin.kind: "new"`，`idPrefix` 如 `hashl`，`code.host` = `src/host.js` 的完整内容（逐字）。
-2. `cordis_run` 激活（纯 Host 插件，无客户端 UI，无需授权）。
-3. 模型工具集中出现 `hashline_read` / `replace` / `undo_last_replace` 即生效。
-
-> 插件代码是会话进程内的临时运行时扩展（`cordis_stop` 可停用）。文件系统中的 `src/host.js` 是源码真源；每次修改后把新内容重新 `cordis_define` 为一个新 Package 再 `update`。
-
-## 安装（静态挂载，永久生效）
-
-同一份 `src/host.js` 也以静态插件形式挂载到 DSH 部署（`index.js` 用 `new Function(body)` 在普通 Node 模块里求值同一函数体；无 `harness` 时走 `staticDefineTool` + `ctx.tools.register` 双模式适配层，不依赖任何 npm 包）。
-
-已安装位置：
-
-```
-~/.dsh/profiles/web/plugins/dsh-hashline-edit-pro/   # 插件本体（部署内镜像）
-~/.dsh/profiles/web/cordis.patch.yml                 # 补丁行：
-#   - insert:
-#       - id: dsh-hashline-edit-pro
-#         name: ./plugins/dsh-hashline-edit-pro/index.js
-```
-
-**生效方式**：DSH web 的 HMR 被部署禁用，修改补丁后需**重启 DSH** 才加载；重启后工具对全部会话可见。**源码同步**：改 `/Volumes/syy2t/project/dsh-plugins/dsh-hashline-edit-pro/src/host.js` 后，需同步复制到部署镜像（`cp src/host.js ~/.dsh/profiles/web/plugins/dsh-hashline-edit-pro/src/host.js`）再重启。
-
-> **fs/tools 服务依赖**：静态挂载时插件通过 `inject: ['fs', 'tools']` 声明依赖（`src/host.js` 的 return 对象）。include 条目是**并行加载**的，`fs` 服务由部署内置的 `fs-sandbox` 插件（`@deepseek-ai/dsh-fs-sandbox`）提供——没有 inject 声明，`apply()` 可能在 fs 挂载前执行，`ctx.get('fs')` 返回 undefined 导致整个插件树加载失败（报 `the fs service is not mounted`）。inject 声明让 cordis 在服务就绪前保持插件 pending，加载顺序不再敏感。
-
-## 安装（npm bundle，官方标准分发）
-
-发布到 npm 后，任意 DSH 用户可标准安装（包声明 `dsh.bundle`，安装时自动加入 profile 的 bundle 层）：
+## 安装
 
 ```bash
 dsh plugin --profile <name> add dsh-hashline-edit-pro
 ```
+
+安装后重启 DSH，工具 `hashline_read` / `replace` / `undo_last_replace` 对所有会话生效。
 
 ## 使用示例
 
