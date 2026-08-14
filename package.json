@@ -1,0 +1,12 @@
+{
+  "name": "dsh-hashline-edit-pro",
+  "version": "0.1.0",
+  "description": "Hash-anchored read/replace/undo tools for DSH. Every line of a file carries a unique 3-char content hash; edits target hashes, never line numbers, so stale anchors are caught before they touch the file. Port of pi-hashline-edit-pro for the Pi coding agent.",
+  "license": "MIT",
+  "private": true,
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test test/"
+  }
+}
