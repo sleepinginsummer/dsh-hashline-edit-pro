@@ -43,6 +43,14 @@
 
 > **fs/tools 服务依赖**：静态挂载时插件通过 `inject: ['fs', 'tools']` 声明依赖（`src/host.js` 的 return 对象）。include 条目是**并行加载**的，`fs` 服务由部署内置的 `fs-sandbox` 插件（`@deepseek-ai/dsh-fs-sandbox`）提供——没有 inject 声明，`apply()` 可能在 fs 挂载前执行，`ctx.get('fs')` 返回 undefined 导致整个插件树加载失败（报 `the fs service is not mounted`）。inject 声明让 cordis 在服务就绪前保持插件 pending，加载顺序不再敏感。
 
+## 安装（npm bundle，官方标准分发）
+
+发布到 npm 后，任意 DSH 用户可标准安装（包声明 `dsh.bundle`，安装时自动加入 profile 的 bundle 层）：
+
+```bash
+dsh plugin --profile <name> add dsh-hashline-edit-pro
+```
+
 ## 使用示例
 
 ```

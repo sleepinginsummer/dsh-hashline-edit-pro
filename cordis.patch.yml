@@ -1,0 +1,8 @@
+# dsh-hashline-edit-pro — bundle layer (npm install form).
+# Install with: dsh plugin --profile <name> add dsh-hashline-edit-pro
+# The row references the package by name so Node resolution finds the
+# installed code. Source checkout users mount it via the profile's own
+# cordis.patch.yml with `name: ./plugins/dsh-hashline-edit-pro/index.js` instead.
+- insert:
+    - id: dsh-hashline-edit-pro
+      name: dsh-hashline-edit-pro
