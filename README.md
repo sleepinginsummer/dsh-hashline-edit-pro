@@ -23,32 +23,6 @@ dsh plugin --profile <name> add dsh-hashline-edit-pro
 
 安装后重启 DSH，工具 `hashline_read` / `replace` / `undo_last_replace` 对所有会话生效。
 
-## 使用示例
-
-```
-hashline_read path=src/main.ts
-→
-  <content>
-  ve7│function hello() {
-  szJ│  console.log("world");
-  kQm│}
-
-  [End of file - total 3 lines]
-  </content>
-
-replace path=src/main.ts remove_from=szJ remove_to=szJ
-        replacement_text='  console.log("hi");'
-→
-  Successfully replaced in src/main.ts. Added 1 line(s), removed 1 line(s).
-
-  Diff (HASH│anchored; "+" rows carry the fresh anchors for chained edits, "-" rows the removed lines):
-
-   ve7│function hello() {
-  -szJ│  console.log("world");
-  +aB3│  console.log("hi");
-   kQm│}
-```
-
 ## 与 pi-hashline-edit-pro 的差异（有意为之）
 
 | 项目 | Pi 原版 | 本移植 |
