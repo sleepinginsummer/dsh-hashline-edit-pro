@@ -55,6 +55,19 @@ jobs:
             echo "::error::tag ${GITHUB_REF_NAME} does not match package.json version ${PKG_VERSION}"
             exit 1
           fi
+      - name: Require release notes section
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f RELEASE_NOTES.md ]; then
+            echo "::error::RELEASE_NOTES.md is missing — create it and add a '## ${GITHUB_REF_NAME}' section before tagging."
+            exit 1
+          fi
+          if ! grep -q "^## ${GITHUB_REF_NAME}$" RELEASE_NOTES.md; then
+            echo "::error::RELEASE_NOTES.md has no '## ${GITHUB_REF_NAME}' section — add the release notes for this version before tagging (see template in the file header)."
+            exit 1
+          fi
 
       - name: Publish to npm
         shell: bash
