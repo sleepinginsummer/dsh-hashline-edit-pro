@@ -83,8 +83,9 @@ replace path=src/main.ts remove_from=szJ remove_to=szJ
 ## 开发
 
 ```bash
-npm test          # node --test：31 个用例，覆盖纯核心（xxh32 参考向量、锚点唯一性、
-                  # 空行段、稳定映射、stale/ambiguous/noop/range 校验、diff、EOL/BOM）
+npm test          # node --test：32 个用例，覆盖纯核心（xxh32 参考向量、锚点唯一性、
+                  # 空行段、稳定映射、stale/ambiguous/noop/range 校验、diff、EOL/BOM、
+                  # 静态求值预检）
 ```
 
 结构：
