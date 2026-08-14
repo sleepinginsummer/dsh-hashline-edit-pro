@@ -1,5 +1,7 @@
 # dsh-hashline-edit-pro
 
+[![npm version](https://img.shields.io/npm/v/dsh-hashline-edit-pro.svg)](https://www.npmjs.com/package/dsh-hashline-edit-pro)
+
 哈希锚点编辑工具（`hashline_read` / `replace` / `undo_last_replace`）——DSH 动态插件，移植自 Pi Coding Agent 生态的 [pi-hashline-edit-pro](https://www.npmjs.com/package/pi-hashline-edit-pro)（RimuruW pi-hashline-edit 系列）。
 
 每行文本携带一个唯一的 3 字符内容哈希作为地址；编辑用哈希定位，**绝不依赖行号或字符串匹配**。文件在读取后被修改时，过期的锚点会在写入前被拦截并返回新锚点反馈——不会出现"改错行"的静默损坏。
